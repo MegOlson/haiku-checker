@@ -143,7 +143,7 @@ $(document).ready(function () {
     if (syllCount.toString() === [5, 7, 5].toString()) {
       $(".final-result").text("Your poem is a valid Haiku!");
     } else {
-      $(".final-result").text("Your poem is not a valid Haiku.");
+      $(".final-result").text("Your poem is not a valid Haiku./n Make sure your entry is three lines total. The first and third having 5 syllables and the second line having 7.");
     }
   });
 });

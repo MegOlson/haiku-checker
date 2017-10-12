@@ -11,12 +11,6 @@ $(document).ready(function(){
     const filteredPoem = haiku.inputFilter(poemInput);
 
     if (haiku.lineCheck(filteredPoem)) {
-      $(".result").text("Your Haiku is three lines long");
-    } else {
-      $(".result").text("Your Haiku is not three lines long");
-    }
-
-    if (haiku.lineCheck(filteredPoem)) {
       let lines = poemInput.split("\n");
       let line1 = haiku.lineCount(lines[0]);
       let line2 = haiku.lineCount(lines[1]);
@@ -25,9 +19,9 @@ $(document).ready(function(){
     }
 
     if (syllCount.toString() === [5, 7, 5].toString()) {
-      $(".final-result").text("Horray!");
+      $(".final-result").text("Your poem is a valid Haiku!");
     } else {
-      $(".final-result").text("Boooooooooooooo!");
+      $(".final-result").text("Your poem is not a valid Haiku.");
     }
   });
 });

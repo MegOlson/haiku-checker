@@ -4,24 +4,30 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="build/css/vendor.css">
     <link href="css/styles.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Berkshire+Swash" rel="stylesheet">
     <script src="build/js/vendor.min.js"></script>
     <script type="text/javascript" src="build/js/app.js"></script>
     <title>Haiku Checker</title>
   </head>
   <body>
     <div class="container">
-      <div class="header">
-        <h1>Haiku Checker</h1>
-      </div>
-      <form id="check-poem">
-        <label for="poem">Enter your Haiku:</label>
-        <div class="form-group">
-          <textarea class="form-control" id="poem" rows="3"></textarea>
+      <div class="all">
+        <div class="header">
+          <p>Haiku Checker</p>
+          <h4><em>Enter in your peom to check if it is a valid haiku.</em></h4>
         </div>
-       <button type="submit" class="btn">Submit</button>
-     </form>
-     <p class="result"></p>
-     <p class="final-result"></p>
+        <form id="check-poem">
+          <label for="poem">Enter your Haiku:</label>
+          <div class="form-group">
+            <textarea class="form-control" id="poem" rows="5"></textarea>
+          </div>
+         <button type="submit" class="btn">Submit</button>
+       </form>
+       <div class="output">
+         <p class="result"></p>
+         <p class="final-result"></p>
+       </div>
+     </div>
     </div>
   </body>
 </html>

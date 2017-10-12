@@ -7,25 +7,19 @@ body {
 }
 
 .all {
-  margin-top: 10%;
   float: right;
   text-align: right;
   margin-bottom: 20px;
-  font-family: 'Berkshire Swash', cursive;
 }
 
 .header{
   text-align: center;
-  font-size: 60px;
+  font-size: 40px;
 }
 
 #check-poem {
   font-size: 30px;
   margin-top: 10%;
-}
-
-#check-poem p {
-  font-size: 60px;
 }
 
 .btn {
@@ -34,8 +28,5 @@ body {
 
 .output {
   float: right;
-}
-
-.output p {
-  font-size: 20px;
+  
 }
