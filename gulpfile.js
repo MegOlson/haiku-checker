@@ -4,8 +4,10 @@ var source = require('vinyl-source-stream');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var utilities = require('gulp-util');
+var buildProduction = utilities.env.production;
 var del = require('del');
 var jshint = require('gulp-jshint');
+var babelify = require("babelify");
 var lib = require('bower-files')({
   "overrides":{
     "bootstrap" : {
@@ -18,70 +20,79 @@ var lib = require('bower-files')({
   }
 });
 var browserSync = require('browser-sync').create();
-var babelify = require("babelify");
 
-var buildProduction = utilities.env.production;
+function createErrorHandler(name) {
+  return function (err) {
+    console.error('Error from ' + name + ' in compress task', err.toString());
+  };
+}
+// to make readable error messages
+//https://github.com/terinjokes/gulp-uglify/tree/master/docs/why-use-pump
 
-// Building App
 gulp.task('concatInterface', function() {
   return gulp.src(['./js/*-interface.js'])
     .pipe(concat('allConcat.js'))
     .pipe(gulp.dest('./tmp'));
 });
 
+
 gulp.task('jsBrowserify', ['concatInterface'], function() {
-  return browserify({ entries: ['./tmp/allConcat.js']})
+  return browserify({ entries: ['./tmp/allConcat.js'] })
     .transform(babelify.configure({
-      presets: ["es2015"]
-    }))
+        presets: ["es2015"]
+      }))
     .bundle()
     .pipe(source('app.js'))
-    .pipe(gulp.dest('./build/js'))
+    .pipe(gulp.dest('./build/js'));
 });
 
 gulp.task("minifyScripts", ["jsBrowserify"], function(){
   return gulp.src("./build/js/app.js")
     .pipe(uglify())
-    .pipe(gulp.dest("./build/js"));
+    .pipe(gulp.dest("./build/js"))
+    // .on('error', createErrorHandler('gulp.dest'));
 });
 
 gulp.task("clean", function(){
   return del(['build', 'tmp']);
 });
 
-gulp.task('build', ['clean'], function(){
+gulp.task("build", ['clean'], function(){
   if (buildProduction) {
     gulp.start('minifyScripts');
   } else {
     gulp.start('jsBrowserify');
   }
-  gulp.start('bower', 'cssBuild');
+  gulp.start('bower');
 });
 
-// Linter
 gulp.task('jshint', function(){
   return gulp.src(['js/*.js'])
     .pipe(jshint())
     .pipe(jshint.reporter('default'));
 });
 
-// Bower Stuff to build front-end vendor files
 gulp.task('bowerJS', function () {
-  return gulp.src(lib.ext("js").files)
+  return gulp.src(lib.ext('js').files)
     .pipe(concat('vendor.min.js'))
     .pipe(uglify())
-    .pipe(gulp.dest('./build/js'));
+    .pipe(gulp.dest('./build/js'))
 });
 
 gulp.task('bowerCSS', function () {
-  return gulp.src(lib.ext('css').files)
+  return gulp.src(['css/*.css', ...lib.ext('css').files])
     .pipe(concat('vendor.css'))
     .pipe(gulp.dest('./build/css'));
 });
 
+gulp.task("cssBuild", function() {
+  gulp.src(['css/*.css', ...lib.ext('css').files])
+  .pipe(concat('vendor.css'))
+  .pipe(gulp.dest('./build/css'))
+});
+
 gulp.task('bower', ['bowerJS', 'bowerCSS']);
 
-// Server things
 gulp.task('serve', function() {
   browserSync.init({
     server: {
@@ -89,6 +100,7 @@ gulp.task('serve', function() {
       index: "index.html"
     }
   });
+
   gulp.watch(['js/*.js'], ['jsBuild']);
   gulp.watch(['bower.json'], ['bowerBuild']);
   gulp.watch(['cssBuild']);
@@ -100,14 +112,4 @@ gulp.task('jsBuild', ['jsBrowserify', 'jshint'], function(){
 
 gulp.task('bowerBuild', ['bower'], function(){
   browserSync.reload();
-});
-
-gulp.task('cssBuild', ['css'], function(){
-  browserSync.reload();
-});
-
-gulp.task("cssBuild", function() {
-  gulp.src(['css/*.css'])
-  .pipe(concat('vendor.css'))
-  .pipe(gulp.dest('./build/css'))
 });
