@@ -42,15 +42,22 @@ var Haiku = exports.Haiku = function () {
     key: "vowelCount",
     value: function vowelCount(word) {
       var letters = word.split("");
-      var vowels = 0;
-
-      letters.forEach(function (letter) {
-        if (letter.match(/[aeiouy]/gi)) {
-          vowels += 1;
-        }
-      });
-      this.syllableCount += vowels;
+      var result = letters.reduce(function (accu, letter) {
+        return letter.match(/[aeiouy]/gi) ? ++accu : accu;
+      }, 0);
+      this.syllableCount += result;
     }
+
+    // let vowels = 0;
+    //
+    // letters.forEach(function(letter){
+    //   if (letter.match(/[aeiouy]/gi)) {
+    //     vowels += 1;
+    //   }
+    // });
+    // this.syllableCount += vowels;
+
+
   }, {
     key: "lineCount",
     value: function lineCount(line) {

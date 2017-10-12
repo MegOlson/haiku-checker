@@ -1,8 +1,19 @@
 body {
-  background-color: lavender;
+  background-image: url("../../img/flower.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
-.well {
+.header{
   text-align: center;
-  background-color: white;
+  font-size: 30px;
+}
+
+#check-poem {
+  float: right;
+  padding-right: 10%;
+  font-size: 25px;
+
 }

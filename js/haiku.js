@@ -39,7 +39,7 @@ export class Haiku{
     //   }
     // });
     // this.syllableCount += vowels;
-  }
+
 
   lineCount(line){
     let count = 0;
